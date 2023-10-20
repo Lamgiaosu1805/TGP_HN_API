@@ -5,9 +5,11 @@ const request = require('request-promise');
 const GiaoHat = require('./src/models/GiaoHat');
 const LinhMuc = require('./src/models/LinhMuc');
 const GiaoXu = require('./src/models/GiaoXu');
+const crawData = require('./src/tools/crawlData');
 
 
 db.connect();
+// crawData.test();
 //Crawl dữ liệu các giáo hạt
 // request('https://www.tonggiaophanhanoi.org/category/to-chuc-tgp/cac-giao-hat/', (error, response, html) => {
 //   if(!error && response.statusCode == 200) {
@@ -40,10 +42,10 @@ db.connect();
       
 //       if(tenLinhMuc != undefined && tenLinhMuc.trim() != "") {
 //         const linhMuc = new LinhMuc({
-//           name: tenLinhMuc,
+//           name: tenLinhMuc.replaceAll("-", ""),
 //           link: link
 //         });
-//         // linhMuc.save()
+//         linhMuc.save();
 //       }
 //     })
 //   }
@@ -53,61 +55,66 @@ db.connect();
 // });
 
 // Crawl Du lieu giao xu
-const crawlDataGiaoXu = async () => {
-  const listGiaoHat = await GiaoHat.find({});
-  listGiaoHat.forEach((giaoHat) => {
-    request("https://www.tonggiaophanhanoi.org/giao-hat-phu-xuyen/")
-    .then((htmlString) => {
-      const $ = cheerio.load(htmlString);
-      $('p').each((index, el) => {
-        const tenGiaoXu = $(el).find('a').text().trim();
-        const link = $(el).find('a').attr('href');
-        if(tenGiaoXu != undefined && tenGiaoXu.trim() != "") {
-          const giaoXu = new GiaoXu ({
-            name: tenGiaoXu,
-            link: link.replace("www.", ""),
-            linkGiaoHat: giaoHat.link,
-          })
-          console.log(giaoXu)
-          // giaoXu.save()
-        }
-      });
-    })
+// const crawlDataGiaoXu = async () => {
+//   const listGiaoHat = await GiaoHat.find({});
+//   listGiaoHat.forEach((giaoHat) => {
+//     request(giaoHat.link)
+//     .then((htmlString) => {
+//       const $ = cheerio.load(htmlString);
+//       $('p').each((index, el) => {
+//         const tenGiaoXu = $(el).find('a').text().trim();
+//         const link = $(el).find('a').attr('href');
+//         if(tenGiaoXu != undefined && tenGiaoXu.trim() != "") {
+//           const giaoXu = new GiaoXu ({
+//             name: tenGiaoXu,
+//             link: link.replace("www.", ""),
+//             linkGiaoHat: giaoHat.link,
+//           })
+//           console.log(giaoXu)
+//           // giaoXu.save()
+//         }
+//       });
+//     })
 
-    .catch((e, trace) => {
-      console.log(e);
-      console.log(trace)
-    })
-  });
-}
+//     .catch((e, trace) => {
+//       console.log(e);
+//       console.log(trace)
+//     })
+//   });
+// }
 
-const crawlLmChinhXu = (link) => {
-  request(link)
-  .then((html) => {
-    const $ = cheerio.load(html);
-    $('p').each((index, el) => {
-      var text = "Linh mục";
-      var text2 = "chính xứ";
-      var text3 = "giám quản"
-      // Đặt 2 text vì kéo về có &bnsp
-      if(($(el).text()).indexOf(text) != -1 && (($(el).text().toString()).indexOf(text2) != -1) || ($(el).text().toString()).indexOf(text3) != -1) {
-        const lm = $(el).find('a').attr('href')
-        if(lm != undefined && lm!="") {
-          getLMChinhXu(lm.replace("www.", ""));
-        }
-      }
-    });
-  })
-}
+// const crawlLmChinhXu = async () => {
+//   const ListGiaoXu = await GiaoXu.find({linkGiaoHat: "https://www.tonggiaophanhanoi.org/giao-hat-nam-dinh/"});
+//   ListGiaoXu.forEach((giaoXu) => {
+//     request(giaoXu.link)
+//       .then((htmlString) => {
+//         const $ = cheerio.load(htmlString);
+//         $('p').each((index, el) => {
+//           var text = "Linh mục";
+//           var text2 = "chính xứ";
+//           var text3 = "quản nhiệm"
+//           // Đặt 2 text vì kéo về có &bnsp
+//           if(($(el).text()).indexOf(text) != -1 && (($(el).text().toString()).indexOf(text2) != -1 || ($(el).text().toString()).indexOf(text3) != -1)) {
+//             const lm = $(el).find('a').text().trim()
+//             if(lm != undefined && lm!="") {
+//               updateLmChinhXu(giaoXu._id, lm.replaceAll("-", ""))
+//             }
+//           }
+//         });
+//       })
+//   })
+// }
 
-const getLMChinhXu = async(link) => {
-  const listLinhMuc = await LinhMuc.findOne({link: link});
-  if(listLinhMuc) {
-    console.log(listLinhMuc.link);
-  }
-}
+// const updateLmChinhXu = async (idGiaoxu, tenLm) => {
+//   const filter = {_id: idGiaoxu}
+//   const lm = await LinhMuc.findOne({name: tenLm})
+//   if(lm == null) return;
+//   const update = {linkLinhMuc: lm.link}
+//   await GiaoXu.findOneAndUpdate(filter, update)
+// }
 
-crawlDataGiaoXu();
+// crawlLmChinhXu();
+// crawlDataGiaoXu();
 
 const app = express()
 const port = 3000
