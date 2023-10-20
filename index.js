@@ -2,8 +2,9 @@ const express = require('express')
 const db = require('./src/config/db')
 const cheerio = require('cheerio');
 const request = require('request-promise');
-// const GiaoHat = require('./src/models/GiaoHat');
+const GiaoHat = require('./src/models/GiaoHat');
 const LinhMuc = require('./src/models/LinhMuc');
+const GiaoXu = require('./src/models/GiaoXu');
 
 
 db.connect();
@@ -51,10 +52,66 @@ db.connect();
 //   }
 // });
 
+// Crawl Du lieu giao xu
+const crawlDataGiaoXu = async () => {
+  const listGiaoHat = await GiaoHat.find({});
+  listGiaoHat.forEach((giaoHat) => {
+    request("https://www.tonggiaophanhanoi.org/giao-hat-phu-xuyen/")
+    .then((htmlString) => {
+      const $ = cheerio.load(htmlString);
+      $('p').each((index, el) => {
+        const tenGiaoXu = $(el).find('a').text().trim();
+        const link = $(el).find('a').attr('href');
+        if(tenGiaoXu != undefined && tenGiaoXu.trim() != "") {
+          const giaoXu = new GiaoXu ({
+            name: tenGiaoXu,
+            link: link.replace("www.", ""),
+            linkGiaoHat: giaoHat.link,
+          })
+          console.log(giaoXu)
+          // giaoXu.save()
+        }
+      });
+    })
+
+    .catch((e, trace) => {
+      console.log(e);
+      console.log(trace)
+    })
+  });
+}
+
+const crawlLmChinhXu = (link) => {
+  request(link)
+  .then((html) => {
+    const $ = cheerio.load(html);
+    $('p').each((index, el) => {
+      var text = "Linh mục";
+      var text2 = "chính xứ";
+      var text3 = "giám quản"
+      // Đặt 2 text vì kéo về có &bnsp
+      if(($(el).text()).indexOf(text) != -1 && (($(el).text().toString()).indexOf(text2) != -1) || ($(el).text().toString()).indexOf(text3) != -1) {
+        const lm = $(el).find('a').attr('href')
+        if(lm != undefined && lm!="") {
+          getLMChinhXu(lm.replace("www.", ""));
+        }
+      }
+    });
+  })
+}
+
+const getLMChinhXu = async(link) => {
+  const listLinhMuc = await LinhMuc.findOne({link: link});
+  if(listLinhMuc) {
+    console.log(listLinhMuc.link);
+  }
+}
+
+crawlDataGiaoXu();
 
 const app = express()
 const port = 3000
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  // console.log(`Example app listening on port ${port}`)
 })
