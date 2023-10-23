@@ -6,7 +6,7 @@ const GiaoHat = require('./src/models/GiaoHat');
 const LinhMuc = require('./src/models/LinhMuc');
 const GiaoXu = require('./src/models/GiaoXu');
 const crawData = require('./src/tools/crawlData');
-
+const { default: axios } = require('axios');
 
 db.connect();
 // crawData.test();
@@ -115,6 +115,77 @@ db.connect();
 
 // crawlLmChinhXu();
 // crawlDataGiaoXu();
+
+//Update Linh Muc Detail
+// const updateLinhMucDetail = async () => {
+//   const listLinhMuc = await LinhMuc.find({});
+//   listLinhMuc.forEach((linhMuc, index) => {
+//     setTimeout(() => {
+//       const details = []
+//       try {
+//         axios(linhMuc.link).then((res) => {
+//           const html = res.data;
+//           const $ = cheerio.load(html);
+//           $(".wp-block-column-is-layout-flow").each((index, el) => {
+//             $(el).find('p').each((index, el) => {
+//               details.push($(el).text());
+//               update(linhMuc._id, details);
+//             });
+//           });
+//         });
+//       } catch (error) {
+//         // console.log(error)
+//       }
+//     }, 1000 * (index + 1))
+//   })
+// }
+
+// const update = async (id, detail) => {
+//   const filter = {_id: id};
+//   const update = {detail: detail};
+//   try {
+//     await LinhMuc.findOneAndUpdate(filter, update);
+//     console.log(detail);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+const updateGiaoXuDetail = async () => {
+  const listGiaoXu = await GiaoXu.find({});
+  listGiaoXu.forEach((giaoXu, index) => {
+    setTimeout(() => {
+      const details = []
+      try {
+        axios(giaoXu.link).then((res) => {
+          const html = res.data;
+          const $ = cheerio.load(html);
+          $(".wp-block-column-is-layout-flow").each((index, el) => {
+            $(el).find('p').each((index, el) => {
+              details.push($(el).text());
+              updateGiaoXu(giaoXu._id, details);
+              console.log(details);
+            });
+          });
+        });
+      } catch (error) {
+        console.log(error)
+      }
+    }, 1000 * (index + 1))
+  })
+}
+const updateGiaoXu = async (id, detail) => {
+  const filter = {_id: id};
+  const update = {detail: detail};
+  try {
+    await GiaoXu.findOneAndUpdate(filter, update);
+    console.log(detail);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+updateGiaoXuDetail();
 
 const app = express()
 const port = 3000

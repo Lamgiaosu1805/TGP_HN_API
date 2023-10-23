@@ -21,6 +21,10 @@ const GiaoXu = new Schema({
     linkLinhMuc: {
         type: String,
         default: "",
+    },
+    detail: {
+        type: Array,
+        default: [],
     }
 }, {
     timestamps: true

@@ -13,6 +13,10 @@ const LinhMuc = new Schema({
     image: {
         type: String,
         default: "",
+    },
+    detail: {
+        type: Array,
+        default: [],
     }
 }, {
     timestamps: true
