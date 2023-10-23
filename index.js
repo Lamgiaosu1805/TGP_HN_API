@@ -126,26 +126,26 @@ db.connect();
 //         axios(linhMuc.link).then((res) => {
 //           const html = res.data;
 //           const $ = cheerio.load(html);
-//           $(".wp-block-column-is-layout-flow").each((index, el) => {
+//           $(".wp-block-column").each((index, el) => {
 //             $(el).find('p').each((index, el) => {
 //               details.push($(el).text());
-//               update(linhMuc._id, details);
 //             });
+//             update(linhMuc._id, details);
 //           });
 //         });
 //       } catch (error) {
-//         // console.log(error)
+//         console.log(error)
 //       }
 //     }, 1000 * (index + 1))
 //   })
 // }
 
-// const update = async (id, detail) => {
+// const update = async (id, details) => {
 //   const filter = {_id: id};
-//   const update = {detail: detail};
+//   const update = {detail: details};
 //   try {
 //     await LinhMuc.findOneAndUpdate(filter, update);
-//     console.log(detail);
+//     console.log(details);
 //   } catch (error) {
 //     console.log(error);
 //   }
@@ -160,31 +160,81 @@ const updateGiaoXuDetail = async () => {
         axios(giaoXu.link).then((res) => {
           const html = res.data;
           const $ = cheerio.load(html);
-          $(".wp-block-column-is-layout-flow").each((index, el) => {
+          $(".wp-block-columns").each((index, el) => {
             $(el).find('p').each((index, el) => {
               details.push($(el).text());
-              updateGiaoXu(giaoXu._id, details);
-              console.log(details);
             });
+            updateGiaoXu(giaoXu._id, details);
           });
         });
       } catch (error) {
         console.log(error)
       }
-    }, 1000 * (index + 1))
+    }, 2000 * (index + 1))
   })
 }
-const updateGiaoXu = async (id, detail) => {
+
+// const updateGiaoXuPicture = async () => {
+//   const listGiaoXu = await GiaoXu.find({});
+//   listGiaoXu.forEach((giaoXu, index) => {
+//     setTimeout(() => {
+//       const images = []
+//       try {
+//         axios(giaoXu.link).then((res) => {
+//           const html = res.data;
+//           const $ = cheerio.load(html);
+//           $(".wp-block-image").each((index, el) => {
+//             const imgUrl = $(el).find('img').attr('data-src');
+//             if(imgUrl != undefined && imgUrl != "") {
+//               const newUrl = imgUrl.replaceAll("www.", "");
+//               images.push(newUrl);
+//               updateGiaoXu(giaoXu._id, images);
+//             }
+//           });
+//         });
+//       } catch (error) {
+//         console.log(error)
+//       }
+//     }, 1000 * (index + 1))
+//   })
+// }
+
+
+const updateGiaoXu = async (id, details) => {
   const filter = {_id: id};
-  const update = {detail: detail};
+  const update = {detail: details};
   try {
     await GiaoXu.findOneAndUpdate(filter, update);
-    console.log(detail);
+    console.log(details);
   } catch (error) {
     console.log(error);
   }
 }
 
+// const updateLinhMucPicture = async () => {
+//   const listLinhMuc = await LinhMuc.find({});
+//   listLinhMuc.forEach((linhMuc, index) => {
+//     setTimeout(() => {
+//       try {
+//         axios(linhMuc.link).then((res) => {
+//           const html = res.data;
+//           const $ = cheerio.load(html);
+//           $(".wp-block-image").each((index, el) => {
+//             const imgUrl = $(el).find('img').attr('data-src');
+//             if(imgUrl != undefined && imgUrl != "") {
+//               const newUrl = imgUrl.replaceAll("www.", "");
+//               update(linhMuc._id, newUrl);
+//             }
+//           });
+//         });
+//       } catch (error) {
+//         console.log(error)
+//       }
+//     }, 1000 * (index + 1))
+//   })
+// }
+// updateLinhMucPicture()
+// updateLinhMucDetail();
 updateGiaoXuDetail();
 
 const app = express()

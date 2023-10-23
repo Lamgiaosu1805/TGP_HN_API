@@ -11,7 +11,7 @@ const GiaoXu = new Schema({
         default: "",
     },
     image: {
-        type: String,
+        type: Array,
         default: "",
     },
     linkGiaoHat: {
