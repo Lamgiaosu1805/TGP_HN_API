@@ -15,7 +15,7 @@ class LinhMucController {
 
     showMoreLinhMuc(req, res, next) {
         const page = parseInt(req.params.page);
-        LinhMuc.find().skip((page-1) * 20).limit(20)
+        LinhMuc.find().skip((page-1) * 20).limit(1)
             .then(linhMucs => res.json({
                 code: 200,
                 length: linhMucs.length,
