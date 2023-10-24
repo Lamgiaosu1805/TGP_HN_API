@@ -8,7 +8,7 @@ const connect = async () => {
     }
     try {
         await mongoose.connect(
-          'mongodb+srv://lamgiaosu1999:nghiemlamhust1@cluster0.9eytviv.mongodb.net/?retryWrites=true&w=majority',
+          process.env.MONGODB_URI,
           connectionParams
         )
         console.log("complete")
