@@ -14,23 +14,18 @@ class LinhMucController {
     }
 
     showMoreLinhMuc(req, res, next) {
-        const page = req.params.page
-        if(typeof page != Number) {
-            res.send("no data");
-        }
-        else {
-            LinhMuc.find().skip((page - 1) * 20).limit(20)
+        const page = parseInt(req.params.page);
+        LinhMuc.find().skip((page-1) * 20).limit(20)
             .then(linhMucs => res.json({
-                code: res.status(),
+                code: 200,
                 length: linhMucs.length,
                 page: page,
                 data: linhMucs,
             }))
-            .catch(err => res.json({
-                code: res.status(),
-                error: err
+            .then(err => res.json({
+                code: 500,
+                err: err,
             }))
-        }
     }
     
 }
