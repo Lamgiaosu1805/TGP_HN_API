@@ -1,3 +1,11 @@
+const cheerio = require('cheerio');
+const request = require('request-promise');
+const GiaoHat = require('./src/models/GiaoHat');
+const LinhMuc = require('./src/models/LinhMuc');
+const GiaoXu = require('./src/models/GiaoXu');
+const crawData = require('./src/tools/crawlData');
+const { default: axios } = require('axios');
+
 const test = () => {
     console.log("Lâm đẹp try");
 }
