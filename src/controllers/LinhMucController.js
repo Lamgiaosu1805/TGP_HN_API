@@ -22,7 +22,7 @@ class LinhMucController {
                 page: page,
                 data: linhMucs,
             }))
-            .then(err => res.json({
+            .catch(err => res.json({
                 code: 500,
                 err: err,
             }))
