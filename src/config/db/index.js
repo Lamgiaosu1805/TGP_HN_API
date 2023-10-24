@@ -1,6 +1,8 @@
 //connect db
+const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 
+dotenv.config();
 const connect = async () => {
     const connectionParams = {
         useNewUrlParser: true,
