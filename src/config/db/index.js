@@ -8,7 +8,7 @@ const connect = async () => {
     }
     try {
         await mongoose.connect(
-          process.env.MONGODB_URI,
+          'mongodb+srv://vercel-admin-user:ByDlO0CLmNYrMZDK@cluster0.9eytviv.mongodb.net/test?retryWrites=true&w=majority',
           connectionParams
         )
         console.log("complete")
