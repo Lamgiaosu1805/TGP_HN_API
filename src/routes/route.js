@@ -1,6 +1,5 @@
 const GiaoXuController = require('../controllers/GiaoXuController');
 const LinhMucController = require('../controllers/LinhMucController');
-const testController = require('../controllers/TestController');
 
 function route(app, url) {
 
