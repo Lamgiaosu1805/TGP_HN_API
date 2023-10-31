@@ -2,6 +2,7 @@ const express = require('express')
 const db = require('./src/config/db')
 const route = require('./src/routes/route');
 const morgan = require('morgan');
+const { crawlLmChinhXu } = require('./src/tools/crawlData');
 const app = express()
 const port = 3000;
 const url = "/api/v1"
