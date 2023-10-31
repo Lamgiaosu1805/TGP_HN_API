@@ -1,10 +1,10 @@
 const cheerio = require('cheerio');
 const request = require('request-promise');
-const GiaoHat = require('./src/models/GiaoHat');
-const LinhMuc = require('./src/models/LinhMuc');
-const GiaoXu = require('./src/models/GiaoXu');
-const crawData = require('./src/tools/crawlData');
-const { default: axios } = require('axios');
+// const GiaoHat = require('./src/models/GiaoHat');
+const LinhMuc = require('../models/LinhMuc');
+const GiaoXu = require('../models/GiaoXu');
+// const crawData = require('./src/tools/crawlData');
+// const { default: axios } = require('axios');
 
 const test = () => {
     console.log("Lâm đẹp try");
@@ -84,37 +84,37 @@ const test = () => {
 //   });
 // }
 
-// const crawlLmChinhXu = async () => {
-//   const ListGiaoXu = await GiaoXu.find({linkGiaoHat: "https://www.tonggiaophanhanoi.org/giao-hat-nam-dinh/"});
-//   ListGiaoXu.forEach((giaoXu) => {
-//     request(giaoXu.link)
-//       .then((htmlString) => {
-//         const $ = cheerio.load(htmlString);
-//         $('p').each((index, el) => {
-//           var text = "Linh mục";
-//           var text2 = "chính xứ";
-//           var text3 = "quản nhiệm"
-//           // Đặt 2 text vì kéo về có &bnsp
-//           if(($(el).text()).indexOf(text) != -1 && (($(el).text().toString()).indexOf(text2) != -1 || ($(el).text().toString()).indexOf(text3) != -1)) {
-//             const lm = $(el).find('a').text().trim()
-//             if(lm != undefined && lm!="") {
-//               updateLmChinhXu(giaoXu._id, lm.replaceAll("-", ""))
-//             }
-//           }
-//         });
-//       })
-//   })
-// }
+const crawlLmChinhXu = async () => {
+  const ListGiaoXu = await GiaoXu.find({linkGiaoHat: "https://www.tonggiaophanhanoi.org/giao-hat-nam-dinh/"});
+  ListGiaoXu.forEach((giaoXu) => {
+    request(giaoXu.link)
+      .then((htmlString) => {
+        const $ = cheerio.load(htmlString);
+        $('p').each((index, el) => {
+          var text = "Linh mục";
+          var text2 = "chính xứ";
+          var text3 = "quản nhiệm"
+          // Đặt 2 text vì kéo về có &bnsp
+          if(($(el).text()).indexOf(text) != -1 && (($(el).text().toString()).indexOf(text2) != -1 || ($(el).text().toString()).indexOf(text3) != -1)) {
+            const lm = $(el).find('a').text().trim()
+            if(lm != undefined && lm!="") {
+              updateLmChinhXu(giaoXu._id, lm.replaceAll("-", ""))
+            }
+          }
+        });
+      })
+  })
+}
 
-// const updateLmChinhXu = async (idGiaoxu, tenLm) => {
-//   const filter = {_id: idGiaoxu}
-//   const lm = await LinhMuc.findOne({name: tenLm})
-//   if(lm == null) return;
-//   const update = {linkLinhMuc: lm.link}
-//   await GiaoXu.findOneAndUpdate(filter, update)
-// }
+const updateLmChinhXu = async (idGiaoxu, tenLm) => {
+  const filter = {_id: idGiaoxu}
+  const lm = await LinhMuc.findOne({name: tenLm})
+  if(!lm) return;
+  console.log(lm.link);
+  const update = {linkLinhMuc: lm.link}
+  await GiaoXu.findOneAndUpdate(filter, update)
+}
 
-// crawlLmChinhXu();
 // crawlDataGiaoXu();
 
 //Update Linh Muc Detail
@@ -238,4 +238,4 @@ const test = () => {
 // updateLinhMucDetail();
 // updateGiaoXuDetail();
 
-module.exports = { test }
+module.exports = { crawlLmChinhXu }
