@@ -8,6 +8,9 @@ function route(app, url) {
     app.get(`${url}/linhmucdoan/page/:page`, LinhMucController.showMoreLinhMuc);
     app.get(`${url}/giaoxu/page/:page`, GiaoXuController.showMoreGiaoXu);
 
+
+    app.post(`${url}/linhmucdoan/search`, LinhMucController.searchLm)
+
 }
 
 module.exports = route

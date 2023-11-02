@@ -27,6 +27,10 @@ class LinhMucController {
                 err: err,
             }))
     }
+
+    searchLm(req, res, next) {
+        res.send("abc")
+    }
     
 }
 
