@@ -29,7 +29,7 @@ class LinhMucController {
     }
 
     searchLm(req, res, next) {
-        res.send("abc")
+        res.json(req.body)
     }
     
 }
