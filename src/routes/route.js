@@ -9,7 +9,8 @@ function route(app, url) {
     app.get(`${url}/giaoxu/page/:page`, GiaoXuController.showMoreGiaoXu);
 
 
-    app.post(`${url}/linhmucdoan/search`, LinhMucController.searchLm)
+    app.post(`${url}/linhmucdoan/search`, LinhMucController.searchLm);
+    app.post(`${url}/giaoxu/search`, GiaoXuController.searchGx);
 
 }
 

@@ -1,6 +1,24 @@
 const GiaoXu = require('../models/GiaoXu');
 const LinhMuc = require('../models/LinhMuc');
 
+const findGx = async (listGx) => {
+    var listGxNew = []
+    for(var i = 0; i < listGx.length; i++) {
+        const lm = await LinhMuc.findOne({link: listGx[i].linkLinhMuc})
+        const obj = listGx[i].toJSON();
+        if(lm) {
+            obj["LinhMucQx"] = lm;
+        }
+        else {
+            obj["LinhMucQx"] = {
+                name: listGx[i].linkLinhMuc
+            }
+        }
+        listGxNew.push(obj)
+    }
+    return listGxNew
+}
+
 class GiaoXuController {
 
     //[GET]
@@ -18,29 +36,31 @@ class GiaoXuController {
         const page = parseInt(req.params.page);
         try {
             const listGiaoXu = await GiaoXu.find().skip((page-1) * 20).limit(20);
-            var listGxNew = []
-            for(var i = 0; i < listGiaoXu.length; i++) {
-                const lm = await LinhMuc.findOne({link: listGiaoXu[i].linkLinhMuc})
-                const obj = listGiaoXu[i].toJSON();
-                if(lm) {
-                    obj["LinhMucQx"] = lm;
-                }
-                else {
-                    obj["LinhMucQx"] = {
-                        name: listGiaoXu[i].linkLinhMuc
-                    }
-                }
-                listGxNew.push(obj)
-            }
             res.json({
                 code: 200,
                 length: listGiaoXu.length,
                 page: page,
-                data: listGxNew,
+                data: await findGx(listGiaoXu),
             })
         } catch (err) {
             console.log(err)
         }
+    }
+
+    searchGx(req, res, next) {
+        const params = req.body.searchValue;
+        GiaoXu.find({
+            detail: {$regex:params, $options: "i"}
+        })
+            .then(async (resq) => res.json({
+                code: 200,
+                length: resq.length,
+                data: await findGx(resq),
+            }))
+            .catch(err => res.json({
+                code: 500,
+                err: err,
+            }))
     }
     
 }
