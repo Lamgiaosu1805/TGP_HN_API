@@ -1,14 +1,10 @@
 const cheerio = require('cheerio');
 const request = require('request-promise');
-// const GiaoHat = require('./src/models/GiaoHat');
+const GiaoHat = require('../models/GiaoHat');
 const LinhMuc = require('../models/LinhMuc');
 const GiaoXu = require('../models/GiaoXu');
-// const crawData = require('./src/tools/crawlData');
-// const { default: axios } = require('axios');
+const { default: axios } = require('axios');
 
-const test = () => {
-    console.log("Lâm đẹp try");
-}
 
 // crawData.test();
 //Crawl dữ liệu các giáo hạt
@@ -84,36 +80,36 @@ const test = () => {
 //   });
 // }
 
-const crawlLmChinhXu = async () => {
-  const ListGiaoXu = await GiaoXu.find({linkGiaoHat: "https://www.tonggiaophanhanoi.org/giao-hat-nam-dinh/"});
-  ListGiaoXu.forEach((giaoXu) => {
-    request(giaoXu.link)
-      .then((htmlString) => {
-        const $ = cheerio.load(htmlString);
-        $('p').each((index, el) => {
-          var text = "Linh mục";
-          var text2 = "chính xứ";
-          var text3 = "quản nhiệm"
-          // Đặt 2 text vì kéo về có &bnsp
-          if(($(el).text()).indexOf(text) != -1 && (($(el).text().toString()).indexOf(text2) != -1 || ($(el).text().toString()).indexOf(text3) != -1)) {
-            const lm = $(el).find('a').text().trim()
-            if(lm != undefined && lm!="") {
-              updateLmChinhXu(giaoXu._id, lm.replaceAll("-", ""))
-            }
-          }
-        });
-      })
-  })
-}
+// const crawlLmChinhXu = async () => {
+//   const ListGiaoXu = await GiaoXu.find({linkGiaoHat: "https://www.tonggiaophanhanoi.org/giao-hat-nam-dinh/"});
+//   ListGiaoXu.forEach((giaoXu) => {
+//     request(giaoXu.link)
+//       .then((htmlString) => {
+//         const $ = cheerio.load(htmlString);
+//         $('p').each((index, el) => {
+//           var text = "Linh mục";
+//           var text2 = "chính xứ";
+//           var text3 = "quản nhiệm"
+//           // Đặt 2 text vì kéo về có &bnsp
+//           if(($(el).text()).indexOf(text) != -1 && (($(el).text().toString()).indexOf(text2) != -1 || ($(el).text().toString()).indexOf(text3) != -1)) {
+//             const lm = $(el).find('a').text().trim()
+//             if(lm != undefined && lm!="") {
+//               updateLmChinhXu(giaoXu._id, lm.replaceAll("-", ""))
+//             }
+//           }
+//         });
+//       })
+//   })
+// }
 
-const updateLmChinhXu = async (idGiaoxu, tenLm) => {
-  const filter = {_id: idGiaoxu}
-  const lm = await LinhMuc.findOne({name: tenLm})
-  if(!lm) return;
-  console.log(lm.link);
-  const update = {linkLinhMuc: lm.link}
-  await GiaoXu.findOneAndUpdate(filter, update)
-}
+// const updateLmChinhXu = async (idGiaoxu, tenLm) => {
+//   const filter = {_id: idGiaoxu}
+//   const lm = await LinhMuc.findOne({name: tenLm})
+//   if(!lm) return;
+//   console.log(lm.link);
+//   const update = {linkLinhMuc: lm.link}
+//   await GiaoXu.findOneAndUpdate(filter, update)
+// }
 
 // crawlDataGiaoXu();
 
@@ -152,28 +148,28 @@ const updateLmChinhXu = async (idGiaoxu, tenLm) => {
 //   }
 // }
 
-// const updateGiaoXuDetail = async () => {
-//   const listGiaoXu = await GiaoXu.find({});
-//   listGiaoXu.forEach((giaoXu, index) => {
-//     setTimeout(() => {
-//       const details = []
-//       try {
-//         axios(giaoXu.link).then((res) => {
-//           const html = res.data;
-//           const $ = cheerio.load(html);
-//           $(".wp-block-columns").each((index, el) => {
-//             $(el).find('p').each((index, el) => {
-//               details.push($(el).text());
-//             });
-//             updateGiaoXu(giaoXu._id, details);
-//           });
-//         });
-//       } catch (error) {
-//         console.log(error)
-//       }
-//     }, 2000 * (index + 1))
-//   })
-// }
+const updateGiaoXuDetail = async () => {
+  const listGiaoXu = await GiaoXu.find({});
+  listGiaoXu.forEach((giaoXu, index) => {
+    setTimeout(() => {
+      const details = []
+      try {
+        axios(giaoXu.link).then((res) => {
+          const html = res.data;
+          const $ = cheerio.load(html);
+          $(".entry-content").each((index, el) => {
+            $(el).find('p').each((index, el) => {
+              details.push($(el).text());
+            });
+            updateGiaoXu(giaoXu._id, details);
+          });
+        });
+      } catch (error) {
+        console.log(error)
+      }
+    }, 2000 * (index + 1))
+  })
+}
 
 // const updateGiaoXuPicture = async () => {
 //   const listGiaoXu = await GiaoXu.find({});
@@ -201,16 +197,16 @@ const updateLmChinhXu = async (idGiaoxu, tenLm) => {
 // }
 
 
-// const updateGiaoXu = async (id, details) => {
-//   const filter = {_id: id};
-//   const update = {detail: details};
-//   try {
-//     await GiaoXu.findOneAndUpdate(filter, update);
-//     console.log(details);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+const updateGiaoXu = async (id, details) => {
+  const filter = {_id: id};
+  const update = {detail: details};
+  try {
+    await GiaoXu.findOneAndUpdate(filter, update);
+    console.log(details);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // const updateLinhMucPicture = async () => {
 //   const listLinhMuc = await LinhMuc.find({});
@@ -238,4 +234,4 @@ const updateLmChinhXu = async (idGiaoxu, tenLm) => {
 // updateLinhMucDetail();
 // updateGiaoXuDetail();
 
-module.exports = { crawlLmChinhXu }
+module.exports = { updateGiaoXuDetail }

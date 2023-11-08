@@ -27,6 +27,18 @@ class LinhMucController {
                 err: err,
             }))
     }
+
+    searchLm(req, res, next) {
+        const params = req.body.searchValue;
+        LinhMuc.find({
+            name: {$regex:params, $options: "i"}
+        })
+            .then(resq => res.json(resq))
+            .catch(err => res.json({
+                code: 500,
+                err: err,
+            }))
+    }
     
 }
 
