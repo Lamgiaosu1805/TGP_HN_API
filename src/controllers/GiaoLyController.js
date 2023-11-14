@@ -36,6 +36,7 @@ class GiaoLyController {
                             }
                         })
                     })
+                    .catch(e => console.log(e))
             } catch (error) {
                 console.log(error)
                 res.json({
@@ -48,6 +49,45 @@ class GiaoLyController {
             res.json({
                 code: 404,
                 error: "Page not found"
+            })
+        }
+    }
+
+    getDetail(req, res, next) {
+        const url = req.body.url;
+        const title = [];
+        const content = [];
+        let link = ""
+        try {
+            axios(url).then(resp => {
+                const html = resp.data;
+                const $ = cheerio.load(html);
+                $('.elementor-widget-container').each((index, el) => {
+                    if(index == 1) {
+                        $(el).find('.has-text-align-center').each((index, el) => {
+                            title.push($(el).text())
+                        })
+                        $(el).find('p').each((i, el) => {
+                            content.push($(el).text())
+                        })
+                        if($(el).find('iframe').attr('data-src')){
+                            link = $(el).find('iframe').attr('data-src')
+                        }
+                    }
+                });
+                res.json({
+                    code: 200,
+                    title: title,
+                    content: content,
+                    link: link
+                })
+            })
+            .catch(next)
+        } catch (error) {
+            console.log(error)
+            res.json({
+                code: 500,
+                error: error
             })
         }
     }

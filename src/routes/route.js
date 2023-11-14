@@ -13,6 +13,7 @@ function route(app, url) {
 
     app.post(`${url}/linhmucdoan/search`, LinhMucController.searchLm);
     app.post(`${url}/giaoxu/search`, GiaoXuController.searchGx);
+    app.post(`${url}/tinmungthanhmattheu/detail`, GiaoLyController.getDetail);
 
 }
 
