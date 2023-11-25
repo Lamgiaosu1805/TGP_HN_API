@@ -42,8 +42,8 @@ class GiaoXuController {
                 page: page,
                 data: await findGx(listGiaoXu),
             })
-        } catch (err) {
-            console.log(err)
+        } catch (error) {
+            console.log(error)
         }
     }
 
