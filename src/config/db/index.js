@@ -1,8 +1,6 @@
 //connect db
 const mongoose = require('mongoose')
 
-console.log("Test");
-
 const connect = async () => {
     const connectionParams = {
         useNewUrlParser: true,
