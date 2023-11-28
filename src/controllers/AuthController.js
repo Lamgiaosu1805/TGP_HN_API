@@ -7,7 +7,7 @@ const genAccessToken = (user) => {
     return jwt.sign({
         id: user._id,
         username: user.username,
-        isManager: user.isManager,
+        role: user.role,
     },
         process.env.SECRET_KEY,
         {
@@ -20,7 +20,7 @@ const genRefeshToken = (user) => {
     return jwt.sign({
         id: user._id,
         username: user.username,
-        isManager: user.isManager,
+        role: user.role,
     },
         process.env.SECRET_KEY,
         {

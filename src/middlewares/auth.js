@@ -23,7 +23,7 @@ const auth = {
 
     verifyTokenForManager: (req, res, next) => {
         auth.verifyToken(req, res, () => {
-            if(req.user.isManager) {
+            if(req.user.role === 1) {
                 next();
             }
             else {
