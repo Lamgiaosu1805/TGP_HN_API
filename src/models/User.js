@@ -22,6 +22,10 @@ const User = new Schema({
     isManager: {
         type: Boolean,
         default: false,
+    },
+    isDelete: {
+        type: Boolean,
+        default: false,
     }
 }, {
     timestamps: true
