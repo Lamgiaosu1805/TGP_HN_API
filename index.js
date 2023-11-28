@@ -4,9 +4,10 @@ const route = require('./src/routes/route');
 const morgan = require('morgan');
 const app = express()
 const port = 3000;
-const url = "/api/v1"
+const url = "/api/v1";
+const dotenv = require('dotenv');
 
-
+dotenv.config();
 db.connect();
 
 app.use(express.urlencoded({
