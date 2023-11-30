@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Profile = new Schema({
-    saitName: {
+    saintName: {
         type: String,
         default: ""
     },
@@ -21,7 +21,6 @@ const Profile = new Schema({
     idAccount: {
         type: String,
         required: true,
-        unique: true
     },
     ngayRuaToi: {
         type: Date,

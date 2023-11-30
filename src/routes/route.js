@@ -11,7 +11,7 @@ function route(app, url) {
     app.get(`${url}/linhmucdoan`, LinhMucController.showAllLinhMuc);
     app.get(`${url}/linhmucdoan/page/:page`, LinhMucController.showMoreLinhMuc);
     app.get(`${url}/giaoxu/page/:page`, GiaoXuController.showMoreGiaoXu);
-    app.get(`${url}/tinmungthanhmattheu/:option`, GiaoLyController.getData)
+    app.get(`${url}/tinmungthanhmattheu/:option`, GiaoLyController.getData);
 
 
     app.post(`${url}/linhmucdoan/search`, LinhMucController.searchLm);
