@@ -7,6 +7,7 @@ const auth = require('../middlewares/auth');
 const CapKhanController = require('../controllers/CapKhanController');
 const ChucVuController = require('../controllers/ChucVuController');
 const XuDoanController = require('../controllers/XuDoanController');
+const MemberInfoController = require('../controllers/MemberInfoController');
 
 function route(app, url) {
 
@@ -33,6 +34,9 @@ function route(app, url) {
 
     //Tạo xứ đoàn
     app.post(`${url}/xudoan/create`, auth.verifyTokenForManager, XuDoanController.create);
+
+    //Tạo profile member
+    app.post(`${url}/xudoan/member/create`, MemberInfoController.create)
 
     //Tạo khởi đầu
     // app.post(`${url}/capkhan`, CapKhanController.create);
