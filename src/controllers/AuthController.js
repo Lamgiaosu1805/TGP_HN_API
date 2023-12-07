@@ -60,9 +60,7 @@ class AuthController {
         try {
             const user = await User.findOne({username: req.body.username});
             if(!user) {
-                res.status(404).json({
-                    message: "Username isvalid"
-                })
+                res.status(404).json("Username isvalid")
             }
             else {
                 const validPassWord = await becrypt.compare(
