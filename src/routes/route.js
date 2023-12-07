@@ -36,7 +36,7 @@ function route(app, url) {
     app.post(`${url}/xudoan/create`, auth.verifyTokenForManager, XuDoanController.create);
 
     //Tạo profile member
-    app.post(`${url}/xudoan/member/create`, MemberInfoController.create)
+    app.post(`${url}/xudoan/member/create`, auth.verifyTokenForManager3, MemberInfoController.create)
 
     //Tạo khởi đầu
     // app.post(`${url}/capkhan`, CapKhanController.create);

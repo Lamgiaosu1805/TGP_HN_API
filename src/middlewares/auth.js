@@ -30,6 +30,17 @@ const auth = {
                 res.status(403).json("Not Allowed")
             }
         })
+    },
+
+    verifyTokenForManager3: (req, res, next) => {
+        auth.verifyToken(req, res, () => {
+            if(req.user.role === 3) {
+                next();
+            }
+            else {
+                res.status(403).json("Not Allowed")
+            }
+        })
     }
 
 }
