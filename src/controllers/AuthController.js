@@ -62,18 +62,20 @@ class AuthController {
             if(!user) {
                 res.status(404).json("Username isvalid")
             }
-            const validPassWord = await becrypt.compare(
-                req.body.password,
-                user.password
-            );
-            if(!validPassWord) {
-                res.status(404).json("Wrong password")
-            }
-            if(user && validPassWord) {
-                const accessToken = genAccessToken(user);
-                const refreshToken = genRefeshToken(user);
-                const {password, ...others} = user._doc;
-                res.status(200).json({...others, accessToken, refreshToken})
+            else {
+                const validPassWord = await becrypt.compare(
+                    req.body.password,
+                    user.password
+                );
+                if(!validPassWord) {
+                    res.status(404).json("Wrong password")
+                }
+                if(user && validPassWord) {
+                    const accessToken = genAccessToken(user);
+                    const refreshToken = genRefeshToken(user);
+                    const {password, ...others} = user._doc;
+                    res.status(200).json({...others, accessToken, refreshToken})
+                }
             }
         } catch (error) {
             console.log(error)
