@@ -7,9 +7,9 @@ const SCOPE = ["https://www.googleapis.com/auth/drive"]
 
 const authorize = async () => {
     const jwtClient = new google.auth.JWT(
-        process.env.API_CLIENT_EMAIL,
+        apikeys.client_email,
         null,
-        process.env.API_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        apikeys.private_key,
         SCOPE
     )
 
