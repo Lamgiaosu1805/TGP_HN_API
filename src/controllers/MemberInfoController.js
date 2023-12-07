@@ -31,19 +31,19 @@ const uploadFile = (authClient, filename, data) => {
             width: 400,
             height: 400,
         });
-        drive.files.create({
-            resource: fileMetaData,
-            media: {
-                body: fs.createReadStream(`${filename}.png`),
-                mimeType: 'image/png'
-            },
-            fields: 'id'
-        }, (err, file) => {
-            if(err) {
-                return rejected(err)
-            }
-            resolve(file);
-        });
+        // drive.files.create({
+        //     resource: fileMetaData,
+        //     media: {
+        //         body: fs.createReadStream(`${filename}.png`),
+        //         mimeType: 'image/png'
+        //     },
+        //     fields: 'id'
+        // }, (err, file) => {
+        //     if(err) {
+        //         return rejected(err)
+        //     }
+        //     resolve(file);
+        // });
 
     })
 }
@@ -56,9 +56,9 @@ class MemberInfoController{
                     uploadFile(auth, body.fileName, body.data)
                 )
                 .then((data) => {
-                    fs.unlink(`${body.fileName}.png`, function (err) {
-                        if (err) throw err;
-                    });
+                    // fs.unlink(`${body.fileName}.png`, function (err) {
+                    //     if (err) throw err;
+                    // });
                     const newMemberInfo = new MemberInfo({
                         saintName: body.saintName,
                         fullname: body.fullname,
