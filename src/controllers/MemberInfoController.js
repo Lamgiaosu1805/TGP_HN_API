@@ -9,7 +9,7 @@ const authorize = async () => {
     const jwtClient = new google.auth.JWT(
         process.env.API_CLIENT_EMAIL,
         null,
-        Buffer.from(process.env.API_PRIVATE_KEY, 'base64').toString('ascii'),
+        process.env.API_PRIVATE_KEY,
         SCOPE
     )
 
