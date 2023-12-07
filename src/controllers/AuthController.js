@@ -7,7 +7,7 @@ const genAccessToken = (user) => {
     return jwt.sign({
         id: user._id,
         username: user.username,
-        isManager: user.isManager,
+        role: user.role,
     },
         process.env.SECRET_KEY,
         {
@@ -20,7 +20,7 @@ const genRefeshToken = (user) => {
     return jwt.sign({
         id: user._id,
         username: user.username,
-        isManager: user.isManager,
+        role: user.role,
     },
         process.env.SECRET_KEY,
         {
@@ -44,11 +44,12 @@ class AuthController {
             const user = await newUser.save();
             if(user) {
                 const newProfile = new Profile({
-                    idAccount: user._id
+                    idAccount: user._id,
+                    fullname: user.username
                 })
                 await newProfile.save()
             }
-            res.status(200).json(user)
+            res.status(200).json({user, message: "create account successfully"})
         } catch (error) {
             console.log(error)
             res.status(500).json(error)

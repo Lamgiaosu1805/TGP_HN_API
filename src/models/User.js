@@ -8,10 +8,11 @@ const User = new Schema({
         minlength: 8,
         unique: true
     },
+    phoneNumber: {
+        type: Number,
+    },
     mail: {
         type: String,
-        // required: true,
-        unique: true,
         default: ""
     },
     password: {
@@ -19,9 +20,9 @@ const User = new Schema({
         required: true,
         minlength: 8,
     },
-    isManager: {
-        type: Boolean,
-        default: false,
+    role: {
+        type: Number,
+        default: 0
     },
     isDelete: {
         type: Boolean,
