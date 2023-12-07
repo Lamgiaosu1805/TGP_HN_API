@@ -19,5 +19,5 @@ app.use(morgan('dev'))
 route(app, url);
 
 app.listen(port, () => {
-  console.log(`Example app listening on porttt ${port}`)
+  console.log(`Example app listening on port ${port}`)
 })
