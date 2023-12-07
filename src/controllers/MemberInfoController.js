@@ -25,25 +25,25 @@ const uploadFile = (authClient, filename, data) => {
             parents: ["1YW7KMuEWLO_AwYTM2mUwndni7-uKHlxa"]
         }
         
-        const writableStream = fs.createWriteStream(`${filename}.png`);
+        const writableStream = fs.createWriteStream(`/tmp/${filename}.png`);
         qrcode.toFileStream(writableStream, data, {
             type: 'png',
             width: 400,
             height: 400,
         });
-        // drive.files.create({
-        //     resource: fileMetaData,
-        //     media: {
-        //         body: fs.createReadStream(`${filename}.png`),
-        //         mimeType: 'image/png'
-        //     },
-        //     fields: 'id'
-        // }, (err, file) => {
-        //     if(err) {
-        //         return rejected(err)
-        //     }
-        //     resolve(file);
-        // });
+        drive.files.create({
+            resource: fileMetaData,
+            media: {
+                body: fs.createReadStream(`/tmp/${filename}.png`),
+                mimeType: 'image/png'
+            },
+            fields: 'id'
+        }, (err, file) => {
+            if(err) {
+                return rejected(err)
+            }
+            resolve(file);
+        });
 
     })
 }
@@ -56,9 +56,9 @@ class MemberInfoController{
                     uploadFile(auth, body.fileName, body.data)
                 )
                 .then((data) => {
-                    // fs.unlink(`${body.fileName}.png`, function (err) {
-                    //     if (err) throw err;
-                    // });
+                    fs.unlink(`/tmp/${body.fileName}.png`, function (err) {
+                        if (err) throw err;
+                    });
                     const newMemberInfo = new MemberInfo({
                         saintName: body.saintName,
                         fullname: body.fullname,
