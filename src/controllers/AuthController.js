@@ -52,7 +52,10 @@ class AuthController {
             res.status(200).json({user, message: "create account successfully"})
         } catch (error) {
             console.log(error)
-            res.status(500).json(error)
+            res.json({
+                code: 500,
+                message: error
+            })
         }
     }
 
@@ -60,7 +63,10 @@ class AuthController {
         try {
             const user = await User.findOne({username: req.body.username});
             if(!user) {
-                res.status(404).json("Username isvalid")
+                res.json({
+                    code: 404,
+                    message: "Username invalid"
+                })
             }
             else {
                 const validPassWord = await becrypt.compare(
@@ -68,18 +74,24 @@ class AuthController {
                     user.password
                 );
                 if(!validPassWord) {
-                    res.status(404).json("Wrong password")
+                    res.json({
+                        code: 404,
+                        message: "Wrong Password"
+                    })
                 }
                 if(user && validPassWord) {
                     const accessToken = genAccessToken(user);
                     const refreshToken = genRefeshToken(user);
                     const {password, ...others} = user._doc;
-                    res.status(200).json({...others, accessToken, refreshToken})
+                    res.status(200).json({...others, accessToken, refreshToken, code: 200})
                 }
             }
         } catch (error) {
             console.log(error)
-            res.status(500).json(error)
+            res.json({
+                code: 500,
+                message: error
+            })
         }
     }
     
