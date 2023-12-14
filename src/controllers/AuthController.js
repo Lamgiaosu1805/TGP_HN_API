@@ -22,7 +22,7 @@ const genRefeshToken = (user) => {
         username: user.username,
         role: user.role,
     },
-        process.env.SECRET_KEY,
+        process.env.REFRESH_KEY,
         {
             expiresIn: "365d"
         }

@@ -28,6 +28,7 @@ function route(app, url) {
     app.get(`${url}/users`, auth.verifyTokenForManager, UserController.getAllUser);
     app.get(`${url}/capkhan`, CapKhanController.getAllCapKhan);
     app.get(`${url}/chucvu`, ChucVuController.getAllChucVu);
+    app.get(`${url}/users/me`, auth.verifyToken, UserController.getUserInfo);
 
     app.post(`${url}/auth/signIn`, AuthController.signIn);
     app.post(`${url}/auth/signUp`, AuthController.signUp);
@@ -36,7 +37,7 @@ function route(app, url) {
     app.post(`${url}/xudoan/create`, auth.verifyTokenForManager, XuDoanController.create);
 
     //Tạo profile member
-    app.post(`${url}/xudoan/member/create`, auth.verifyTokenForManager3, MemberInfoController.create)
+    app.post(`${url}/xudoan/member/create`, auth.verifyTokenForManager3, MemberInfoController.create);
 
     //Tạo khởi đầu
     // app.post(`${url}/capkhan`, CapKhanController.create);
