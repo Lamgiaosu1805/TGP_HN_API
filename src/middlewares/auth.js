@@ -8,7 +8,10 @@ const auth = {
             const accessToken = token.split(" ")[1];
             jwt.verify(accessToken, process.env.SECRET_KEY, (err, user) => {
                 if(err) {
-                    res.status(403).json("Token is not valid");
+                    res.json({
+                        code: 403,
+                        message: "Token is not valid"
+                    });
                 }
                 else {
                     req.user = user;
@@ -17,7 +20,10 @@ const auth = {
             })
         }
         else {
-            res.status(401).json("Not Authenticated")
+            res.json({
+                code: 401,
+                message: "Not Authenticated"
+            })
         }
     },
 
