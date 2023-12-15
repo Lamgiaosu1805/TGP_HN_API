@@ -21,6 +21,7 @@ class UserController{
                     const infoXuDoan = await XuDoan.findOne({idAccount: currentUser.id});
                     res.status(200).json({
                         ...currentUser,
+                        idXuDoan: infoXuDoan.id,
                         tenXuDoan: infoXuDoan.name,
                         detailXuDoan: infoXuDoan.detail,
                         ngayThanhLap: infoXuDoan.ngayThanhLap,
