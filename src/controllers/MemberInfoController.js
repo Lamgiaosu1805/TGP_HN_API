@@ -3,6 +3,7 @@ const { google } = require('googleapis');
 const apikeys = require('../../apikey.json');
 const fs = require('fs');
 const MemberInfo = require('../models/MemberInfo');
+const XuDoan = require('../models/XuDoan');
 const SCOPE = ["https://www.googleapis.com/auth/drive"]
 
 const authorize = async () => {
@@ -69,10 +70,14 @@ class MemberInfoController{
                         if (err) throw err;
                     });
                     MemberInfo.findOneAndUpdate({_id: newMember._id}, {QRCodeUrl: `https://drive.google.com/uc?id=${data.data.id}`})
-                        .then(() => res.json({
-                            message: "create successfully",
-                            code: 200
-                        }))
+                        .then((resp) => {
+                            resp.QRCodeUrl = `https://drive.google.com/uc?id=${data.data.id}`
+                            res.json({
+                                message: "create successfully",
+                                code: 200,
+                                data: resp
+                            });
+                        })
                         .catch(e => {
                             console.log(e.errors);
                             res.json({
@@ -84,6 +89,24 @@ class MemberInfoController{
 
         } catch (error) {
             console.log(error)
+            res.json({
+                code: 500,
+                message: error
+            })
+        };
+    }
+
+    async getAllMemberXuDoan (req, res, next) {
+        const user = req.user;
+        try {
+            const xuDoan = await XuDoan.findOne({idAccount: user.id})
+            const memberXuDoan = await MemberInfo.find({idXuDoan: xuDoan.id})
+            res.json({
+                code: 200,
+                data: memberXuDoan
+            })
+        } catch (error) {
+            console.log(error);
             res.json({
                 code: 500,
                 message: error
