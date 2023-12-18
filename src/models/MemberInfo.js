@@ -33,6 +33,14 @@ const MemberInfo = new Schema({
     QRCodeUrl: {
         type: String,
         default: "",
+    },
+    detail: {
+        type: Array,
+        default: [],
+    },
+    isDelete: {
+        type: Boolean,
+        default: false,
     }
 }, {
     timestamps: true
