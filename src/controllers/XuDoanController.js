@@ -7,6 +7,7 @@ const becrypt = require('bcrypt');
 class XuDoanController{
     
     async create(req, res, next) {
+        //Cần có Transaction
         try {
             const salt = await becrypt.genSalt(10);
             const hashed = await becrypt.hash(req.body.password, salt);
