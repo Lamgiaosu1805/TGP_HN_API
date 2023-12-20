@@ -18,8 +18,8 @@ const XuDoan = new Schema({
         require: true
     },
     detail: {
-        type: Array,
-        default: [],
+        type: Object,
+        default: null,
     },
     ngayThanhLap: {
         type: Date,

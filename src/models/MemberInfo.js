@@ -35,8 +35,8 @@ const MemberInfo = new Schema({
         default: "",
     },
     detail: {
-        type: Array,
-        default: [],
+        type: Object,
+        default: null,
     },
     isDelete: {
         type: Boolean,
