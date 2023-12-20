@@ -12,10 +12,10 @@ class UserController{
         try {
             switch (currentUser.role) {
                 case 1:
-                    console.log("1")
+                    res.status(200).json(currentUser)
                     break;
                 case 2:
-                    console.log("2")
+                    res.status(200).json(currentUser)
                     break;
                 case 3:
                     const infoXuDoan = await XuDoan.findOne({idAccount: currentUser.id});
@@ -29,7 +29,7 @@ class UserController{
                     })
                     break;
                 default:
-                    console.log("123")
+                    res.status(200).json(currentUser)
                     break;
             }
         } catch (error) {
