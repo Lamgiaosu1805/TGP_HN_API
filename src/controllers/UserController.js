@@ -26,6 +26,7 @@ class UserController{
                         detailXuDoan: infoXuDoan.detail,
                         ngayThanhLap: infoXuDoan.ngayThanhLap,
                         idHiepDoan: infoXuDoan.idHiepDoan,
+                        logoXuDoan: infoXuDoan.detail.logoUrl
                     })
                     break;
                 default:
