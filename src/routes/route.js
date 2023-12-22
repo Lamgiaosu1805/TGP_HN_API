@@ -40,6 +40,7 @@ function route(app, url) {
 
     //Tạo profile member
     app.post(`${url}/xudoan/member/create`, auth.verifyTokenForManager3, MemberInfoController.create);
+    app.post(`${url}/xudoan/member/diemdanh`, auth.verifyTokenForManager3, XuDoanController.diemDanh);
 
     //Tạo khởi đầu
     // app.post(`${url}/capkhan`, CapKhanController.create);

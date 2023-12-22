@@ -2,6 +2,7 @@ const User = require("../models/User");
 const XuDoan = require("../models/XuDoan");
 const jwt = require('jsonwebtoken');
 const becrypt = require('bcrypt');
+const DiemDanhTimeSheet = require("../models/DiemDanhTimeSheet");
 
 
 class XuDoanController{
@@ -32,6 +33,37 @@ class XuDoanController{
         } catch (error) {
             console.log(error)
             res.status(500).json(error)
+        }
+    }
+
+    async diemDanh(req, res, next) {
+        const body = req.body;
+        try {
+            const timeSheet = await DiemDanhTimeSheet.find({date: new Date(body.date).toDateString()});
+            const member = timeSheet.find((e) => e.member._id == body.member._id);
+            if(member) {
+                res.json({
+                    code: 304,
+                    message: "member đã được điểm danh rồi"
+                })
+            }
+            else {
+                const newTimeSheet = new DiemDanhTimeSheet({
+                    date: new Date(body.date).toDateString(),
+                    member: body.member
+                })
+                await newTimeSheet.save()
+                    res.json({
+                        message: "complete",
+                        code: 200
+                    })
+            }
+        } catch (error) {
+            console.log(error)
+            res.json({
+                code: 500,
+                message: error.message
+            })
         }
     }
 
