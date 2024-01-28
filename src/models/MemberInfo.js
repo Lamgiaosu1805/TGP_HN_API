@@ -22,6 +22,10 @@ const MemberInfo = new Schema({
         type: String,
         default: "",
     },
+    idLop: {
+        type: String,
+        default: ""
+    },
     idChucVuXuDoan: {
         type: Array,
         default: [],
