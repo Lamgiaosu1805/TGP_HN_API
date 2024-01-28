@@ -24,7 +24,8 @@ class ClassController{
             await classes.save();
             res.json(
                 {
-                    ...req.body,
+                    data: req.body,
+                    message: "create class successfully",
                     code: 200
                 }
             )

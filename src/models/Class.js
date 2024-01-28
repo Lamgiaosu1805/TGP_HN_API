@@ -13,6 +13,10 @@ const Class = new Schema({
     idXuDoan: {
         type: String,
         required: true,
+    },
+    isDelete: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

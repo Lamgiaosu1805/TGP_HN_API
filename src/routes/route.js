@@ -33,7 +33,7 @@ function route(app, url) {
     app.get(`${url}/chucvu`, ChucVuController.getAllChucVu);
     
     app.get(`${url}/xudoan/members`, auth.verifyTokenForManager3, MemberInfoController.getAllMemberXuDoan);
-    app.post(`${url}/xudoan/class/create`, ClassController.createClass);
+    app.post(`${url}/xudoan/class/create`,auth.verifyTokenForManager3, ClassController.createClass);
     app.get(`${url}/xudoan/class`, ClassController.getAllClass);
     //Tạo xứ đoàn
     app.post(`${url}/xudoan/create`, auth.verifyTokenForManager, XuDoanController.create);
