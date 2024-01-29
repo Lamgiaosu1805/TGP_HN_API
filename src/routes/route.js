@@ -34,7 +34,7 @@ function route(app, url) {
     
     app.get(`${url}/xudoan/members`, auth.verifyTokenForManager3, MemberInfoController.getAllMemberXuDoan);
     app.post(`${url}/xudoan/class/create`,auth.verifyTokenForManager3, ClassController.createClass);
-    app.get(`${url}/xudoan/class`, ClassController.getAllClass);
+    app.get(`${url}/xudoan/class/:idXuDoan`, ClassController.getAllClass);
     //Tạo xứ đoàn
     app.post(`${url}/xudoan/create`, auth.verifyTokenForManager, XuDoanController.create);
     //Tạo profile member

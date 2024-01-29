@@ -4,7 +4,7 @@ const Class = require("../models/Class");
 class ClassController{
     async getAllClass(req, res, next) {
         try {
-            const listClass = await Class.find();
+            const listClass = await Class.find({idXuDoan: req.params.idXuDoan});
             res.json({
                 data: listClass,
                 code: 200
